@@ -1,193 +1,244 @@
-// Modern, polished, full layout with hero, side banners (left only), footer, and FAQs — now in dark sci-fi style
 "use client";
 
-import { useState } from "react";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
 import { motion } from "framer-motion";
-import Image from "next/image";
-import { ShieldCheck, AlertTriangle, ChevronDown } from "lucide-react";
+import {
+  ArrowRight,
+  ChartNoAxesCombined,
+  LockKeyhole,
+  ShieldAlert,
+  Sparkles,
+  Zap,
+} from "lucide-react";
+import Link from "next/link";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
-export default function Home() {
-  const [password, setPassword] = useState("");
-  const [personalInfo, setPersonalInfo] = useState("");
-  const [prediction, setPrediction] = useState<string | null>(null);
-  const [loading, setLoading] = useState(false);
-  const [openFAQ, setOpenFAQ] = useState<number | null>(null);
+const featureCards = [
+  {
+    icon: ShieldAlert,
+    title: "Security-First Prediction",
+    description:
+      "Blend machine learning and heuristic confidence so users get fast and explainable risk signals.",
+  },
+  {
+    icon: ChartNoAxesCombined,
+    title: "Actionable UX Metrics",
+    description:
+      "Every result includes score, entropy, and hygiene indicators to drive better password behavior.",
+  },
+  {
+    icon: Zap,
+    title: "Smooth Micro-Interactions",
+    description:
+      "Framer Motion transitions keep each page lively and premium without reducing clarity or speed.",
+  },
+];
 
-  const handleCheckStrength = async () => {
-    if (!password) return;
-    setLoading(true);
-    try {
-      const response = await fetch("https://password-analyzer-api-r397.onrender.com/predict", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ password, personal_info: personalInfo }),
-      });
-      if (!response.ok) throw new Error("Network error");
-      const data = await response.json();
-      setPrediction(data.prediction);
-    } catch (err) {
-      setPrediction(null);
-    } finally {
-      setLoading(false);
-    }
-  };
+const stats = [
+  { label: "Prediction Engine", value: "ML + Heuristic" },
+  { label: "Experience", value: "Multi-Page App" },
+  { label: "Design Style", value: "Elegant Security UI" },
+];
 
-  const getColor = prediction === "Strong" ? "text-green-500" : "text-red-500";
-  const getBar = prediction === "Strong" ? "100%" : "40%";
-  const getIcon = prediction === "Strong" ? <ShieldCheck size={20} /> : <AlertTriangle size={20} />;
+const heroSignals = [
+  { label: "Threat Detection", value: "94%", tone: "bg-emerald-500" },
+  { label: "Response Clarity", value: "Explainable", tone: "bg-sky-500" },
+  { label: "UX Flow", value: "Guided", tone: "bg-amber-500" },
+];
 
+export default function HomePage() {
   return (
-    <div className="min-h-screen flex flex-col bg-gradient-to-br from-gray-950 to-black text-white">
-      {/* Hero Section */}
-      <header className="text-center py-20 px-4">
-        <motion.h1
-          className="text-6xl font-extrabold tracking-tight mb-4 text-white drop-shadow-[0_0_10px_rgba(0,255,255,0.4)]"
-          animate={{ opacity: [0.6, 1, 0.6] }}
-          transition={{ repeat: Infinity, duration: 6, ease: "easeInOut" }}
-        >
-          Ultimate Password Strength Analyzer
-        </motion.h1>
-        <p className="text-lg text-gray-400 max-w-2xl mx-auto">
-          Stop guessing. Start testing. Real-time AI-based strength evaluation with deep security insights.
-        </p>
-      </header>
-
-      {/* Main Grid */}
-      <main className="flex flex-col lg:flex-row items-start justify-between gap-6 px-6 pb-20">
-        {/* Left Banner */}
-        <div className="hidden lg:flex h-[330px] w-[747px] mr-4">
-          <Image
-            src="/123.png"
-            alt="Hacker Left"
-            width={747}
-            height={330}
-            className="rounded-xl shadow-2xl object-cover h-full w-full"
-          />
-        </div>
-
-        {/* Password Card */}
+    <div className="space-y-14 pb-6">
+      <section className="grid items-center gap-8 lg:grid-cols-[1.08fr_0.92fr]">
         <motion.div
-          className="w-full max-w-lg ml-auto"
-          initial={{ opacity: 0, y: 30 }}
+          initial={{ opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
+          transition={{ duration: 0.45 }}
+          className="space-y-6"
         >
-          <Card className="p-6 shadow-2xl rounded-2xl bg-black/50 backdrop-blur-md border-2 border-cyan-400 shadow-[0_4px_20px_rgba(0,255,255,0.2)]">
-            <CardContent className="space-y-6">
-              <div className="text-center">
-                <h2 className="text-3xl font-bold text-cyan-400">Try it below</h2>
-                <p className="text-gray-500 text-sm mt-2">Put your password to the test.</p>
+          <p className="section-kicker">Cyber Intelligence Studio</p>
+          <h1 className="hero-title">
+            Build <span className="ink-gradient">confident security decisions</span> with a
+            modern password platform.
+          </h1>
+          <p className="max-w-xl text-base text-muted-foreground md:text-lg">
+            Your project is now structured for a complete product flow: polished home page,
+            interactive prediction lab, portfolio storytelling, and team-first credibility pages.
+          </p>
+          <div className="flex flex-wrap gap-3">
+            <Button asChild size="lg" className="rounded-xl">
+              <Link href="/prediction">
+                Launch Prediction Lab
+                <ArrowRight className="size-4" />
+              </Link>
+            </Button>
+            <Button asChild variant="outline" size="lg" className="rounded-xl bg-white/60">
+              <Link href="/portfolio">Explore Portfolio</Link>
+            </Button>
+          </div>
+          <div className="grid gap-3 sm:grid-cols-3">
+            {stats.map((item) => (
+              <div
+                key={item.label}
+                className="rounded-xl border border-white/70 bg-white/62 px-3 py-3 shadow-sm"
+              >
+                <p className="text-xs uppercase tracking-wide text-muted-foreground">{item.label}</p>
+                <p className="mt-1 text-sm font-semibold">{item.value}</p>
               </div>
-
-              <div className="space-y-4">
-                <div>
-                  <label className="block text-sm font-medium">Password</label>
-                  <Input
-                    type="password"
-                    placeholder="Enter password"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    className="mt-1 bg-black/30 border border-cyan-500 text-white shadow-[0_0_10px_rgba(0,255,255,0.2)]"
-                  />
-                </div>
-
-                <div>
-                  <label className="block text-sm font-medium">Personal Info (optional)</label>
-                  <Input
-                    placeholder="e.g. name, birth year"
-                    value={personalInfo}
-                    onChange={(e) => setPersonalInfo(e.target.value)}
-                    className="mt-1 bg-black/30 border border-cyan-500 text-white shadow-[0_0_10px_rgba(0,255,255,0.2)]"
-                  />
-                </div>
-
-                <Button onClick={handleCheckStrength} disabled={loading} className="w-full bg-cyan-600 hover:bg-cyan-500">
-                  {loading ? "Checking..." : "Check Strength"}
-                </Button>
-              </div>
-
-              {prediction && (
-                <motion.div
-                  key={prediction}
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  className="text-center space-y-2"
-                >
-                  <div className={`flex items-center justify-center gap-2 font-semibold ${getColor}`}>
-                    {getIcon} <span>{prediction} Password</span>
-                  </div>
-                  <div className="w-full h-2 bg-gray-800 rounded overflow-hidden">
-                    <motion.div
-                      className={`h-full ${prediction === "Strong" ? "bg-green-400" : "bg-red-400"}`}
-                      initial={{ width: 0 }}
-                      animate={{ width: getBar }}
-                      transition={{ duration: 0.4 }}
-                    />
-                  </div>
-                  <p className="text-xs text-gray-500">
-                    {prediction === "Strong"
-                      ? "Looks solid. Still, don’t reuse it."
-                      : "Weak sauce. Add length, symbols, avoid patterns."}
-                  </p>
-                </motion.div>
-              )}
-            </CardContent>
-          </Card>
-        </motion.div>
-      </main>
-
-      {/* Intermediary Banner */}
-      <div className="relative w-full h-[500px] bg-[url('/cyber-banner.png')] bg-cover bg-center bg-no-repeat my-12 border-y border-cyan-900 shadow-inner">
-        <div className="absolute inset-0 bg-black/50 flex items-center justify-center">
-          <h3 className="text-3xl md:text-4xl font-bold text-cyan-300 tracking-wide text-center px-4">
-            Protect Smarter. Defend Harder.
-          </h3>
-        </div>
-      </div>
-
-      {/* FAQs */}
-      <section className="bg-black py-16 px-6 border-t border-gray-800">
-        <div className="max-w-3xl mx-auto">
-          <h2 className="text-3xl font-bold mb-8 text-center text-cyan-400">FAQs</h2>
-          <ul className="space-y-4">
-            {[
-              "Is my password stored?",
-              "What makes a password strong?",
-              "How is the strength determined?",
-            ].map((q, idx) => (
-              <li key={idx}>
-                <button
-                  onClick={() => setOpenFAQ(openFAQ === idx ? null : idx)}
-                  className="w-full flex justify-between items-center px-4 py-3 bg-gray-900 text-left border border-cyan-800 rounded-md hover:bg-gray-800 transition"
-                >
-                  <span className="text-sm font-medium text-white">{q}</span>
-                  <ChevronDown
-                    size={18}
-                    className={`transform transition-transform ${openFAQ === idx ? "rotate-180" : "rotate-0"}`}
-                  />
-                </button>
-                {openFAQ === idx && (
-                  <div className="px-4 pt-2 text-sm text-gray-400">
-                    {idx === 0 && "No. We don’t store anything. Ever."}
-                    {idx === 1 && "Length, randomness, symbols, no personal info, and no patterns."}
-                    {idx === 2 && "Machine learning. Trained on 14M+ samples."}
-                  </div>
-                )}
-              </li>
             ))}
-          </ul>
-        </div>
+          </div>
+        </motion.div>
+
+        <motion.div
+          initial={{ opacity: 0, scale: 0.96 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.45, delay: 0.1 }}
+          className="glass-surface relative overflow-hidden rounded-[2rem] border border-white/70 p-5"
+        >
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(61,134,190,0.24),transparent_38%),radial-gradient(circle_at_bottom_right,rgba(190,142,72,0.18),transparent_32%)]" />
+          <div className="relative space-y-4 rounded-[1.6rem] border border-white/65 bg-slate-950 px-5 py-5 text-white shadow-[0_22px_60px_rgba(15,23,42,0.24)]">
+            <div className="flex items-start justify-between gap-4">
+              <div>
+                <p className="text-xs uppercase tracking-[0.24em] text-slate-400">
+                  Security Snapshot
+                </p>
+                <h2 className="mt-2 text-2xl font-semibold">Live Password Intelligence</h2>
+              </div>
+              <span className="rounded-full border border-cyan-400/30 bg-cyan-400/10 px-3 py-1 text-xs font-medium text-cyan-200">
+                User-friendly analytics
+              </span>
+            </div>
+
+            <div className="grid gap-3 sm:grid-cols-3">
+              {heroSignals.map((signal) => (
+                <div
+                  key={signal.label}
+                  className="rounded-2xl border border-white/10 bg-white/5 px-3 py-3"
+                >
+                  <div className={`mb-3 h-1.5 w-12 rounded-full ${signal.tone}`} />
+                  <p className="text-xs uppercase tracking-[0.18em] text-slate-400">
+                    {signal.label}
+                  </p>
+                  <p className="mt-2 text-sm font-semibold text-white">{signal.value}</p>
+                </div>
+              ))}
+            </div>
+
+            <div className="grid gap-4 lg:grid-cols-[1.15fr_0.85fr]">
+              <div className="rounded-2xl border border-white/10 bg-white/5 p-4">
+                <div className="flex items-center justify-between text-sm text-slate-300">
+                  <span>Security health score</span>
+                  <span>84 / 100</span>
+                </div>
+                <div className="mt-3 h-3 overflow-hidden rounded-full bg-white/10">
+                  <motion.div
+                    className="h-full rounded-full bg-gradient-to-r from-cyan-400 via-sky-400 to-amber-300"
+                    initial={{ width: 0 }}
+                    animate={{ width: "84%" }}
+                    transition={{ duration: 0.9, delay: 0.3 }}
+                  />
+                </div>
+                <div className="mt-5 grid gap-3 sm:grid-cols-2">
+                  <div className="rounded-xl bg-white/6 p-3">
+                    <div className="flex items-center gap-2 text-sm font-medium text-white">
+                      <LockKeyhole className="size-4 text-cyan-300" />
+                      Entropy reading
+                    </div>
+                    <p className="mt-2 text-xs text-slate-400">
+                      Measures complexity so users understand why a result is strong or weak.
+                    </p>
+                  </div>
+                  <div className="rounded-xl bg-white/6 p-3">
+                    <div className="flex items-center gap-2 text-sm font-medium text-white">
+                      <Sparkles className="size-4 text-amber-300" />
+                      Guided improvement
+                    </div>
+                    <p className="mt-2 text-xs text-slate-400">
+                      Converts technical output into direct next actions for faster decisions.
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              <div className="space-y-3 rounded-2xl border border-white/10 bg-white/5 p-4">
+                {[
+                  { title: "Prediction", value: "Strong", helper: "ML-backed confidence layer" },
+                  { title: "Risk Pattern", value: "Low", helper: "No repeated token sequence" },
+                  { title: "Recommendation", value: "Reuse not advised", helper: "Pair with MFA" },
+                ].map((item) => (
+                  <div key={item.title} className="rounded-xl bg-white/6 p-3">
+                    <p className="text-xs uppercase tracking-[0.16em] text-slate-400">
+                      {item.title}
+                    </p>
+                    <p className="mt-2 text-base font-semibold text-white">{item.value}</p>
+                    <p className="mt-1 text-xs text-slate-400">{item.helper}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </motion.div>
       </section>
 
-      {/* Footer */}
-      <footer className="text-center pb-6 mt-auto">
-        <p className="text-white text-sm font-semibold animate-pulse drop-shadow-[0_0_5px_rgba(255,255,255,0.8)]">
-          Made by Divyansh Aggarwal and Divyanshu with ❤
-        </p>
-      </footer>
+      <section className="grid gap-4 md:grid-cols-3">
+        {featureCards.map((card, index) => (
+          <motion.div
+            key={card.title}
+            initial={{ opacity: 0, y: 14 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.4 }}
+            transition={{ duration: 0.28, delay: index * 0.05 }}
+          >
+            <Card className="glass-surface h-full border-white/70">
+              <CardHeader className="space-y-3">
+                <span className="inline-flex size-10 items-center justify-center rounded-xl bg-primary/12 text-primary">
+                  <card.icon className="size-5" />
+                </span>
+                <CardTitle>{card.title}</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <p className="text-sm text-muted-foreground">{card.description}</p>
+              </CardContent>
+            </Card>
+          </motion.div>
+        ))}
+      </section>
+
+      <motion.section
+        initial={{ opacity: 0, y: 12 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.3 }}
+        className="glass-surface rounded-3xl border border-white/70 p-6 md:p-8"
+      >
+        <div className="grid gap-8 md:grid-cols-[0.95fr_1.05fr]">
+          <div className="space-y-3">
+            <p className="section-kicker">What You Can Demo</p>
+            <h2 className="text-3xl font-semibold leading-tight">
+              A complete flow from first impression to actionable prediction.
+            </h2>
+            <p className="text-sm text-muted-foreground">
+              The architecture now supports storytelling, usability, and technical confidence in one
+              cohesive website.
+            </p>
+          </div>
+          <div className="grid gap-4 sm:grid-cols-2">
+            {[
+              "Multi-page IA with clear navigation",
+              "Advanced form flow with validation",
+              "Animated data visualization for results",
+              "Portfolio and team credibility pages",
+            ].map((point) => (
+              <div
+                key={point}
+                className="rounded-xl border border-white/70 bg-white/65 px-4 py-3 text-sm text-foreground/90"
+              >
+                {point}
+              </div>
+            ))}
+          </div>
+        </div>
+      </motion.section>
     </div>
   );
 }
